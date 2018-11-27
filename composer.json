@@ -1,0 +1,23 @@
+{
+    "require": {
+        "php": "^7.0"
+    },
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Mario Yepes",
+            "email": "mario.yepes@dazzet.co"
+        }
+    ],
+    "minimum-stability": "RC",
+    "autoload": {
+      "psr-4": {
+        "IhsGetWell\\": "lib/"
+      }
+    },
+    "scripts": {
+      "zip": "rm -f ${T_DIR}.zip && T_DIR=`basename ${PWD}` && cd .. && zip -r ${T_DIR}/${T_DIR}.zip ${T_DIR} -x ${T_DIR}/.* -x ${T_DIR}/*.md -x ${T_DIR}/composer.* -x ${T_DIR}/phpunit* -x ${T_DIR}/test/* -x .env"
+    },
+    "require-dev": {
+    }
+}
