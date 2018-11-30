@@ -18,8 +18,22 @@ namespace IhsGetWell;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+
 Settings\PluginActions::instance(plugin_basename(__FILE__))->start();
 Settings\Settings::instance()->start();
 
-$getWellMail = Mail\Send::instance();
+
+$getWellMail = Mail\Send::instance()->start();
 Shortcodes\GetWellForm::instance($getWellMail)->start();
+Shortcodes\GetWellPdfTest::instance()->start();
+
+Pdf\Generate::instance()->start();
+
+// Do not create the PDF class unless is needed
+if (!empty($_POST['get_well_name'])) {
+    $mpdf = new \Mpdf\Mpdf(array(
+        'default_font_size' => 12,
+        'default_font' => 'helvetica'
+    ));
+    Pdf\Send::instance($mpdf)->start();
+}

@@ -95,9 +95,10 @@ class GetWellForm{
         <div class="get-well-submit">
             <input id="get-well-submit-button" class="get-well-submit-button" type="submit" name="get_well_submit" value="<?php _e('Submit Data', 'ihs-get-well'); ?>">
         </div>
-
-
     </form>
+
+
+    <iframe id="#ihs-get-well-pdf" src="https://wp.devenv/ihs/?ihs-get-well-pdf=1#toolbar=0" style="width: 100%; height: 50vh"></iframe>
 
 </div>
 <?php
