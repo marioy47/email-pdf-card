@@ -81,6 +81,7 @@ class GetWellForm{
             <input id="get-well-my-phone" class="get-well-input" type="tel" name="get_well_my_pone" data-validation="">
         </div>
 
+
         <h3><?php _e('Card details', 'ihs-get-well') ?></h3>
         <div class="get-well-group message">
             <label for="get-well-message"><?php _e('Card Message', 'ihs-get-well') ?></label>
@@ -91,14 +92,21 @@ class GetWellForm{
             <input id="get-well-delivery-date" class="get-well-input" type="text" name="get_well_delivery_date" autocomplete="off">
         </div>
         <?php wp_nonce_field( plugin_basename( __FILE__ ), 'ihs-get-well-nonce' ); ?>
+
+        <div class="get-well-button">
+            <button id="get-well-preview-button"><?php _e('Preview', 'ihs-get-well') ?></button>
+        </div>
+
+        <iframe id="#ihs-get-well-pdf" src="https://wp.devenv/ihs/?ihs-get-well-pdf=1#toolbar=0" style="width: 100%; height: 50vh"></iframe>
+
         <div class="get-well-notices"></div>
+
         <div class="get-well-submit">
             <input id="get-well-submit-button" class="get-well-submit-button" type="submit" name="get_well_submit" value="<?php _e('Submit Data', 'ihs-get-well'); ?>">
         </div>
     </form>
 
 
-    <iframe id="#ihs-get-well-pdf" src="https://wp.devenv/ihs/?ihs-get-well-pdf=1#toolbar=0" style="width: 100%; height: 50vh"></iframe>
 
 </div>
 <?php

@@ -25,7 +25,6 @@ Settings\Settings::instance()->start();
 
 $getWellMail = Mail\Send::instance()->start();
 Shortcodes\GetWellForm::instance($getWellMail)->start();
-Shortcodes\GetWellPdfTest::instance()->start();
 
 Pdf\Generate::instance()->start();
 
