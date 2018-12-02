@@ -66,7 +66,22 @@ class Settings
         );
 
         register_setting('ihs-get-well', 'ihs_get_well_images');
-        add_settings_field('ihs_get_well_images', null, function() {}, 'ihs-get-well', 'images');
+
+        add_settings_section(
+            'locations',
+            __('Location information', 'ihs-get-well'),
+            array($this, 'sectionLocations'),
+            'ihs-get-well'
+        );
+
+        register_setting('ihs-get-well', 'ihs_get_well_locations');
+        add_settings_field(
+            'ihs_get_well_locations',
+            __('Locations', 'ihs-get-well'),
+            array($this, 'fieldLocations'),
+            'ihs-get-well',
+            'locations'
+        );
     }
 
     public function sectionImages()
@@ -114,5 +129,16 @@ class Settings
 <?php
     }
 
+
+    public function sectionLocations()
+    {
+        _e('Add a the location name and the location email separated by a | (pipe symbol) on each line');
+    }
+
+    public function fieldLocations()
+    {
+        $val = get_option('ihs_get_well_locations', '');
+        echo '<textarea name="ihs_get_well_locations" placeholder="Hospital Name | email@hostpital-name.com" class="widefat" rows="10">'.$val.'</textarea>';
+    }
 
 }

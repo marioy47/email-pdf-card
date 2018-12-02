@@ -38,7 +38,8 @@ class GetWellForm{
     public function shortcode($atts)
     {
         $atts = shortcode_atts( array(
-            'form_id' => uniqid('get-well-form-')
+            'form_id' => uniqid('get-well-form-'),
+            'locations' => str_replace("\n", ",", get_option('ihs_get_well_locations'))
         ), $atts);
         wp_localize_script( 'ihs-get-well', 'ihs_get_well', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -64,7 +65,17 @@ class GetWellForm{
         </div>
         <div class="get-well-group location">
             <label for="get-well-location"><?php _e('Hospital Location', 'ihs-get-well') ?></label>
-            <select id="get-well-location" class="get-well-select" name="get_well_location" data-validation=""><?php echo $locations ?></select>
+            <select id="get-well-location" class="get-well-select" name="get_well_location" data-validation="">
+                <option value=""></option>
+                <?php foreach (explode(',', $atts['locations']) as $location): ?>
+                    <?php
+                        list($name, $email) = explode('|', $location);
+                        $name = trim($name); $email = trim($email);
+                        if (empty($name) || empty($email)) continue;
+                    ?>
+                    <option value="<?php echo $email; ?>"><?php echo $name; ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <h3><?php _e('Sender Information', 'ihs-get-well') ?></h3>
