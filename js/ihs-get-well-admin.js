@@ -19,15 +19,18 @@ jQuery(function($) {
         button: {
             text: 'Add this image'
         },
-        multiple: false
+        multiple: true
     }).on('select', function() {
-      var el = wp_media.state().get('selection').first().toJSON();
-      console.log(el.url);
-      var $clone = $template.clone().removeClass('template');
-      $clone.find('.image-name').html(el.name);
-      $clone.find('.image-url img').attr('src', el.url);
-      $clone.find('.image-actions input').val(el.url);
-      $table.find('tbody').append($clone);
+
+      wp_media.state().get('selection').each(function(i) {
+        var el = i.toJSON();
+        console.log(el);
+        var $clone = $template.clone().removeClass('template');
+        $clone.find('.image-url img').attr('src', el.sizes.thumbnail.url).attr('title', el.title);
+        $clone.find('.image-url a').attr('href', el.url);
+        $clone.find('.image-actions input').val(el.id);
+        $table.find('tbody').append($clone);
+      });
 
       var count = $table.find('tbody')
 

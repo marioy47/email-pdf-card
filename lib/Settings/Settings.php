@@ -93,7 +93,7 @@ class Settings
         _e('Choose the images you want as card backgrounds', 'ihs-get-well');
 
 ?>
-<table class="form-table" id="ihs-get-well-images-table">
+<table class="form-table" id="ihs-get-well-images-table" width="90%" align="center">
     <thead>
         <tr>
             <th>Image</th>
@@ -102,7 +102,7 @@ class Settings
     </thead>
     <tbody>
         <tr class="template row">
-            <th class="image-url"><img src="" style="max-width: 60%;"></th>
+            <td class="image-url"><a target="_blank" href=""><img class="aligncenter" /></a></td>
             <td class="image-actions">
                 <a class="ihs-remove-image-button button" href="#">Remove</a>
                 <input type="hidden" name="ihs_get_well_images[]"  class="image-input" value="">
@@ -112,10 +112,10 @@ class Settings
         </tr>
         <?php foreach ($val as $v): ?>
         <tr class="row">
-            <th class="image-url"><img src="<?php echo $v ?>" style="max-width: 60%;"></th>
+            <td class="image-url"><a target="_blank" href="<?php echo wp_get_attachment_url($v)?>"><?php echo wp_get_attachment_image($v); ?></a></td>
             <td class="image-actions">
                 <a class="ihs-remove-image-button button" href="#">Remove</a>
-                <input type="hidden" name="ihs_get_well_images[]"  class="image-input" value="">
+                <input type="hidden" name="ihs_get_well_images[]"  class="image-input" value="<?php echo $v ?>">
                 &nbsp;
                 <span class="dashicons dashicons-move"></span>
             </td>
