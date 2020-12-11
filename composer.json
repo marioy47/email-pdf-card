@@ -1,24 +1,35 @@
 {
-    "require": {
-        "php": "^7.0",
-        "mpdf/mpdf": "^7.1"
-    },
-    "license": "Commercial",
-    "authors": [
-        {
-            "name": "Mario Yepes",
-            "email": "mario.yepes@dazzet.co"
-        }
-    ],
-    "minimum-stability": "RC",
-    "autoload": {
-      "psr-4": {
-        "IhsGetWell\\": "lib/"
-      }
-    },
-    "scripts": {
-      "zip": "rm -f ${T_DIR}.zip && T_DIR=`basename ${PWD}` && cd .. && zip -r ${T_DIR}/${T_DIR}.zip ${T_DIR} -x ${T_DIR}/.* -x ${T_DIR}/*.md -x ${T_DIR}/composer.* -x ${T_DIR}/phpunit* -x ${T_DIR}/test/* -x .env"
-    },
-    "require-dev": {
+  "name": "marioy47/email-pdf-card",
+  "description": "WordPress plugin to send PDF's in emails with get well messages for instance",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mario Yepes",
+      "email": "marioy47@gmail.com"
     }
+  ],
+  "minimum-stability": "stable",
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/php-compatibility": "*",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "sirbrillig/phpcs-variable-analysis": "*",
+    "wp-coding-standards/wpcs": "*"
+  },
+  "scripts": {
+    "install-codestandards": [
+      "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+    ],
+    "post-install-cmd": [
+      "@install-codestandards"
+    ],
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf"
+  },
+  "autoload": {
+    "classmap": [
+      "inc/"
+    ]
+  }
 }
