@@ -31,5 +31,8 @@
     "classmap": [
       "inc/"
     ]
+  },
+  "require": {
+    "mpdf/mpdf": "^8.0"
   }
 }

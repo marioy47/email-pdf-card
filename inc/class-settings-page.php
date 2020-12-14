@@ -67,7 +67,7 @@ class Settings_Page {
 	 * Creates the HTML for the settings page.
 	 */
 	public function create_page() {
-		$this->options = get_option( 'email_pdf', array( 'images' => array() ) );
+		$this->options = get_option( $this->options_key, array( 'images' => array() ) );
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -112,6 +112,8 @@ class Settings_Page {
 
 	/**
 	 * Creates the settings page section Images.
+	 *
+	 * @phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 	 */
 	public function section_images() {
 		wp_enqueue_media();
@@ -213,5 +215,23 @@ class Settings_Page {
 	 * @var array
 	 */
 	private $options = array();
+
+	/**
+	 * All plugins options are stored in an array. This is the key of the array.
+	 *
+	 * @var string P.e email_pdf.
+	 */
+	protected $options_key;
+
+	/**
+	 * Sets the key name of the var for the get_option().
+	 *
+	 * @param string $key key name for all options.
+	 * @return self
+	 */
+	public function set_options_key( $key ): self {
+		$this->options_key = $key;
+		return $this;
+	}
 
 }

@@ -1,38 +1,66 @@
 <?php
+/**
+ * Creates a PDF to display inline.
+ *
+ * @package Email_Pdf_Card
+ */
 
-namespace IhsGetWell\Pdf;
+namespace EmailPdfCard;
 
-class Generate
-{
-    static function instance()
-    {
-        static $obj;
-        return isset($obj) ? $obj : $obj = new self();
-    }
+/**
+ * Creates a PDF from Query Parammeters.
+ */
+class Generate_Display_Pdf {
 
-    private function __construct()
-    {
+	/**
+	 * Singleton.
+	 */
+	private function __construct() {
 
-    }
+	}
 
-    public function start()
-    {
-        add_filter('query_vars', array($this, 'queryVars'));
-        add_action('parse_request', array($this, 'parseRequest'));
-    }
+	/**
+	 * Factory.
+	 */
+	public static function get_instance() {
+		static $obj;
+		return isset( $obj ) ? $obj : $obj = new self();
+	}
 
-    public function queryVars($vars)
-    {
-        $new_vars = array('ihs-get-well-pdf');
-        $vars = $new_vars + $vars;
-        return $vars;
-    }
+	/**
+	 * Calls add_action and add_filter hooks.
+	 *
+	 * @return self
+	 */
+	public function wp_hooks(): self {
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
+		add_action( 'parse_request', array( $this, 'parse_request' ) );
+		return $this;
+	}
 
-    public function parseRequest($wp)
-    {
-        if (!array_key_exists('ihs-get-well-pdf', $wp->query_vars)) return;
+	/**
+	 * Adds new Url Query Parammeters to watch for.
+	 *
+	 * @param array $vars Array passed by WordPress.
+	 * @return array
+	 */
+	public function query_vars( $vars ): array {
+		$new_vars = array( $this->url_param );
+		$vars     = $new_vars + $vars;
+		return $vars;
+	}
 
-        $html =<<<EOF
+	/**
+	 * If a URL has the registered query_vars it will output a PDF.
+	 *
+	 * @param stdClass $wp The WordPress object.
+	 */
+	public function parse_request( $wp ) {
+		if ( ! array_key_exists( $this->url_param, $wp->query_vars ) ) {
+			return;
+		}
+
+		$html = <<<EOF
 <style>
 @page {
     margin-top: 25%;
@@ -53,16 +81,35 @@ body {
 </body>
 EOF;
 
-        $mpdf = new \Mpdf\Mpdf(array(
-            'mode' => 'utf-8',
-            'format' => 'A4-L',
-            'orientation' => 'L'
-        ));
-        $mpdf->SetDisplayMode('fullpage');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output();
-        exit;
-    }
+		$mpdf = new \Mpdf\Mpdf(
+			array(
+				'mode'        => 'utf-8',
+				'format'      => 'A4-L',
+				'orientation' => 'L',
+			)
+		);
+		$mpdf->SetDisplayMode( 'fullpage' );
+		$mpdf->WriteHTML( $html );
+		$mpdf->Output();
+		exit;
+	}
 
+	/**
+	 * URL param to watch out for.
+	 *
+	 * @var string
+	 */
+	protected $url_param;
+
+	/**
+	 * Sets the URL param to watch out for so the PDF gets generated
+	 *
+	 * @param string $param the URL param name.
+	 * @return self
+	 */
+	public function set_url_param( $param ): self {
+		$this->url_param = $param;
+		return $this;
+	}
 
 }

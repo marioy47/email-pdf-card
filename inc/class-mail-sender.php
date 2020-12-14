@@ -21,7 +21,7 @@ class Send {
 	 *
 	 * @var array
 	 */
-	protected $_headers = array(
+	protected $the_headers = array(
 		'Replay-To' => 'Mario Yepes <mario.yepes@dazzet.co>',
 	);
 
@@ -30,28 +30,28 @@ class Send {
 	 *
 	 * @var string
 	 */
-	protected $_to = 'marioy47@gmail.com';
+	protected $the_to = 'marioy47@gmail.com';
 
 	/**
 	 * The Subject: email field.
 	 *
 	 * @var string
 	 */
-	protected $_subject = 'Get Well Card';
+	protected $the_subject = 'Get Well Card';
 
 	/**
 	 * The message body content.
 	 *
 	 * @var string
 	 */
-	protected $_body = 'Message body';
+	protected $the_body = 'Message body';
 
 	/**
 	 * Array of paths to attachments
 	 *
 	 * @var array
 	 */
-	protected $_attachments = array();
+	protected $the_attachments = array();
 
 	/**
 	 * Adds the required actions to WordPress
@@ -60,7 +60,7 @@ class Send {
 	 *
 	 * @return self
 	 */
-	private function __constructor(): self {
+	private function __construct() {
 		add_action( 'wp_mail_failed', array( $this, 'on_mail_error' ), 10, 1 );
 		add_filter( 'wp_mail_content_type', array( $this, 'mail_content_type' ) );
 
@@ -72,16 +72,19 @@ class Send {
 	 *
 	 * @return self
 	 */
-	static function get_instance() {
+	public static function get_instance() {
 		static $obj;
 		return isset( $obj ) ? $obj : $obj = new self();
 	}
 
 	/**
 	 * Mail error handling function.
+	 *
+	 * @param WP_Error $wp_error The error object sent by wp_mail.
 	 */
 	public function on_mail_error( $wp_error ) {
 		echo '<div class="error"><p><pre>';
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		print_r( $wp_error->errors );
 		echo '</pre></div>';
 	}
@@ -104,7 +107,7 @@ class Send {
 	 * @return self
 	 */
 	public function set_header( $name, $val ) {
-		$this->_headers[ $name ] = $val;
+		$this->the_headers[ $name ] = $val;
 		return $this;
 	}
 
@@ -115,26 +118,50 @@ class Send {
 	 * @return self
 	 */
 	public function to( $val ) {
-		$this->_to = $val;
+		$this->the_to = $val;
 		return $this;
 	}
 
-	public function subject( $val ) {
-		$this->_subject = $val;
-		return $this;
-	}
-	public function body( $val ) {
-		$this->_body = $val;
-		return $this;
-	}
-
-	public function attachment( $val ) {
-		$this->_attachments[] = $val;
+	/**
+	 * Sets the email subject.
+	 *
+	 * @param string $val The email subject.
+	 * @return self
+	 */
+	public function subject( $val ):self {
+		$this->the_subject = $val;
 		return $this;
 	}
 
+	/**
+	 * Sets the email body.
+	 *
+	 * @param string $val The email body.
+	 * @return self
+	 */
+	public function body( $val ):self {
+		$this->the_body = $val;
+		return $this;
+	}
+
+	/**
+	 * Adds an attachment to the email. Can be called multiple times.
+	 *
+	 * @param string $val The PATH to the attachment.
+	 * @return self
+	 */
+	public function attachment( $val ):self {
+		$this->the_attachments[] = $val;
+		return $this;
+	}
+
+	/**
+	 * Sends the email with the configured data using `wp_mail`.
+	 *
+	 * @return bool
+	 */
 	public function send() {
-		return wp_mail( $this->_to, $this->_subject, $this->_body, $this->_headers, $this->_attachments );
+		return wp_mail( $this->the_to, $this->the_subject, $this->the_body, $this->the_headers, $this->the_attachments );
 	}
 
 }

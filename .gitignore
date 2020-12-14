@@ -1,5 +1,6 @@
 *~
 .DS_Store
+.eslintcache
 /*.zip
 /deploy.sh
 /js/

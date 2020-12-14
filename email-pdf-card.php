@@ -20,7 +20,10 @@ namespace EmailPdfCard;
 define( 'EMAIL_PDF_CARD_VERSION', '1.0.0' );
 
 require_once __DIR__ . '/vendor/autoload.php';
-$plugin_slug = 'email-pdf-card';
+$plugin_slug     = 'email-pdf-card'; // Used for the settings page url.
+$form_shortcode  = 'email-pdf-card'; // Name of the shortcode.
+$options_key     = 'email_pdf_card'; // for the get_option() calls.
+$url_query_param = 'email-pdf-generate'; // URL param for the on-the-fly pdf gen.
 
 Plugin_Setup::get_instance()
 	->set_file( __FILE__ )
@@ -28,22 +31,19 @@ Plugin_Setup::get_instance()
 	->wp_hooks();
 
 Settings_Page::get_instance()
-    ->set_slug($plugin_slug)
+	->set_slug( $plugin_slug )
+	->set_options_key( $options_key )
 	->wp_hooks();
-/*
-$getWellMail = Mail\Send::instance()->start();
-Shortcodes\GetWellForm::instance( $getWellMail )->start();
 
-Pdf\Generate::instance()->start();
+Generate_Display_Pdf::get_instance()
+	->set_url_param( $url_query_param )
+	->wp_hooks();
 
-// Do not create the PDF class unless is needed
-if ( ! empty( $_POST['get_well_name'] ) ) {
-	$mpdf = new \Mpdf\Mpdf(
-		array(
-			'default_font_size' => 12,
-			'default_font'      => 'helvetica',
-		)
-	);
-	Pdf\Send::instance( $mpdf )->start();
-}
- */
+Shortcode_Email_Pdf_Form::get_instance()
+	->set_slug( $plugin_slug )
+	->set_file( __FILE__ )
+	->set_shortcode_name( $form_shortcode )
+	->set_options_key( $options_key )
+	->set_url_param( $url_query_param )
+	->wp_hooks();
+

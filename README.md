@@ -29,3 +29,14 @@ git clone git@github.com:marioy47/email-pdf-card.git .
 npm install
 npm start
 ```
+
+## TODO
+
+- [ ] Add composer installation to `gulpfile.js`
+- [ ] Fix [X-Frame-Option](https://developer.mozilla.org/es/docs/Web/HTTP/Headers/X-Frame-Options) for inline PDF (or open in a new window)
+- [ ] Create the TypeScript that handles the form submission 
+- [ ] Finish the ajax call
+- [ ] Add some usage documentation
+- [ ] Enable the usage of templates
+- [ ] Enable the selection of background images
+- [ ] Convert the admin image selector to TypeScript
