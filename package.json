@@ -7,8 +7,10 @@
     "lib": "lib"
   },
   "scripts": {
+    "start": "gulp",
+    "build:prod": "export NODE_ENV=production gulp build",
     "lint": "eslint ts/*.ts && composer phpcs",
-	"lint:fix": "eslint --fix ts/ && composer phpcbf"
+    "lint:fix": "eslint --fix ts/ && composer phpcbf"
   },
   "repository": {
     "type": "git",
@@ -26,10 +28,12 @@
     "@typescript-eslint/parser": "^4.9.1",
     "@wordpress/eslint-plugin": "^7.3.0",
     "@wordpress/prettier-config": "^0.4.0",
+    "del": "^6.0.0",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-prettier": "^3.2.0",
     "gulp": "^4.0.2",
+    "gulp-composer": "^0.4.5",
     "gulp-typescript": "^6.0.0-alpha.1",
     "husky": "^4.3.5",
     "lint-staged": "^10.5.3",
@@ -44,6 +48,6 @@
   },
   "lint-staged": {
     "*.ts": "eslint --cache --fix",
-	"*.php": "composer phpcbf"
+    "*.php": "composer phpcbf"
   }
 }

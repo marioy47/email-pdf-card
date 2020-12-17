@@ -47,7 +47,7 @@ class Settings_Page {
 	 * Register (not enqueue) the script that enables image selection on the dashboard.
 	 */
 	public function register_scripts() {
-		wp_register_script( $this->plugin_slug . '-admin', plugin_dir_url( dirname( __DIR__ ) ) . 'js/email-pdf-admin.js', array(), EMAIL_PDF_CARD_VERSION, false );
+		wp_register_script( $this->plugin_slug . '-admin', plugin_dir_url( $this->plugin_file ) . 'js/email-pdf-admin.js', array(), EMAIL_PDF_CARD_VERSION, false );
 	}
 
 	/**
@@ -65,6 +65,8 @@ class Settings_Page {
 
 	/**
 	 * Creates the HTML for the settings page.
+	 *
+	 * @phpcs:disable Squiz.Commenting.FileComment.Missing
 	 */
 	public function create_page() {
 		$this->options = get_option( $this->options_key, array( 'images' => array() ) );
@@ -85,30 +87,39 @@ class Settings_Page {
 	 * Fields and section creation for the settings page.
 	 */
 	public function register_fields() {
-		register_setting( 'email-pdf', 'email_pdf' );
+		register_setting( 'email-pdf', $this->options_key );
 
 		add_settings_section(
-			'images',
-			__( 'Images', 'email-pdf' ),
-			array( $this, 'section_images' ),
-			'email-pdf'
-		);
-
-		add_settings_section(
-			'locations',
-			__( 'Location information', 'email-pdf' ),
-			array( $this, 'section_recipients' ),
+			'default',
+			__( 'Email and PDF configuration', 'email-pdf' ),
+			false,
 			'email-pdf'
 		);
 
 		add_settings_field(
-			'ihs_get_well_locations',
-			__( 'Locations', 'email-pdf' ),
+			'default-recipients',
+			__( 'Recipients', 'email-pdf' ),
 			array( $this, 'field_recipients' ),
-			'email-pdf',
-			'locations'
+			'email-pdf'
+		);
+
+		add_settings_section(
+			'email-pdf-images',
+			__( 'Images', 'email-pdf' ),
+			array( $this, 'section_images' ),
+			'email-pdf'
 		);
 	}
+
+	/**
+	 * Text field for recipient list.
+	 */
+	public function field_recipients() {
+		$val = array_key_exists( 'recipients', $this->options ) ? $this->options['recipients'] : '';
+		echo '<textarea name="' . esc_attr( $this->options_key ) . '[recipients]" placeholder="email@example.com | Name or desc" class="widefat" rows="10">' . esc_attr( $val ) . '</textarea>';
+		echo '<p class="description">' . esc_html__( 'One recipient per line. Use the pipe (|) simbol to separate the email from the name', 'email-pdf' ) . '</p>';
+	}
+
 
 	/**
 	 * Creates the settings page section Images.
@@ -130,47 +141,30 @@ class Settings_Page {
 		</tr>
 	</thead>
 	<tbody>
-		<tr class="template row">
-			<td class="image-url"><a target="_blank" href=""><img class="aligncenter" /></a></td>
-			<td class="image-actions">
-				<a class="ihs-remove-image-button button" href="#">Remove</a>
-				<input type="hidden" name="ihs_get_well_images[]"  class="image-input" value="">
-				&nbsp;
-				<span class="dashicons dashicons-move"></span>
-			</td>
-		</tr>
 		<?php foreach ( $images as $v ) : ?>
 		<tr class="row">
 			<td class="image-url"><a target="_blank" href="<?php echo wp_get_attachment_url( $v ); ?>"><?php echo wp_get_attachment_image( $v ); ?></a></td>
 			<td class="image-actions">
-				<a class="ihs-remove-image-button button" href="#">Remove</a>
-				<input type="hidden" name="ihs_get_well_images[]"  class="image-input" value="<?php echo $v; ?>">
-				&nbsp;
-				<span class="dashicons dashicons-move"></span>
+				<a class="remove" href="#"><?php esc_html_e( 'Remove', 'email-pdf' ); ?></a>
+				<input type="hidden" name="<?php echo $this->options_key; ?>[images][]" value="<?php echo $v; ?>" />
 			</td>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
 <div>
-	<button class="button" id="ihs-get-well-add-image">Add Image</button>
+	<button class="button" id="email-pdf-add-image">Add Image</button>
 </div>
+<template id="email-pdf-template">
+	<tr class="row">
+		<td class="image-url"><a target="_blank" href=""><img class="aligncenter" /></a></td>
+		<td class="image-actions">
+			<a class="remove" href="#"><?php esc_html_e( 'Remove', 'email-pdf' ); ?></a>
+			<input type="hidden" name="<?php echo $this->options_key; ?>[images][]" value="" />
+		</td>
+	</tr>
+</template>
 		<?php
-	}
-
-	/**
-	 * Section for creation of list of recipients.
-	 */
-	public function section_recipients() {
-		esc_html_e( 'Add a recipient desc/name and the recipient email separated by a | (pipe symbol). One recipient per line', 'email-pdf' );
-	}
-
-	/**
-	 * Text field for recipient list.
-	 */
-	public function field_recipients() {
-		$val = array_key_exists( 'recipients', $this->options ) ? $this->options['recipients'] : '';
-		echo '<textarea name="email_pdf[recipients]" placeholder="Recipient Desc | email@example.com" class="widefat" rows="10">' . esc_attr( $val ) . '</textarea>';
 	}
 
 	/**

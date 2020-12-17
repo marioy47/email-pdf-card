@@ -32,6 +32,7 @@ Plugin_Setup::get_instance()
 
 Settings_Page::get_instance()
 	->set_slug( $plugin_slug )
+	->set_file( __FILE__ )
 	->set_options_key( $options_key )
 	->wp_hooks();
 
@@ -40,8 +41,8 @@ Generate_Display_Pdf::get_instance()
 	->wp_hooks();
 
 Shortcode_Email_Pdf_Form::get_instance()
-	->set_slug( $plugin_slug )
 	->set_file( __FILE__ )
+	->set_slug( $plugin_slug )
 	->set_shortcode_name( $form_shortcode )
 	->set_options_key( $options_key )
 	->set_url_param( $url_query_param )

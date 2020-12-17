@@ -52,7 +52,7 @@ class Shortcode_Email_Pdf_Form {
 	 * Registers the scripts that will be used in the shortcode.
 	 */
 	public function register_scripts() {
-		wp_register_script( $this->plugin_slug, plugin_dir_url( $this->plugin_file ) . 'js/email-pdf.js', array(), EMAIL_PDF_CARD_VERSION, true );
+		wp_register_script( $this->plugin_slug, plugin_dir_url( $this->plugin_file ) . '/js/email-pdf.js', array(), EMAIL_PDF_CARD_VERSION, true );
 	}
 
 	/**

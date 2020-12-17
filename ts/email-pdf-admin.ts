@@ -1,48 +1,61 @@
+interface WpObject {
+	state: any;
+	media: any;
+}
 
+declare const wp: WpObject;
 
-jQuery(function($) {
+(() => {
+	const addImage = document.getElementById(
+		'email-pdf-add-image'
+	) as HTMLButtonElement;
 
-  var $table = $('#ihs-get-well-images-table');
-  var $add = $('#ihs-get-well-add-image');
-  var $template = $table.find('.template');
+	const template = document.getElementById(
+		'email-pdf-template'
+	) as HTMLTemplateElement;
 
-  $table.find('tbody').sortable();
-  $template.remove();
+	const table = document.getElementById(
+		'email-pdf-images-table'
+	) as HTMLTableElement;
 
-  $add.on('click', function(e) {
-    e.preventDefault();
-    var wp_media = wp.media({
-        title: 'Select background image for card',
-        library: {
-            type: 'image'
-        },
-        button: {
-            text: 'Add this image'
-        },
-        multiple: true
-    }).on('select', function() {
+	const rmButtons = table.querySelectorAll<HTMLAnchorElement>('.remove');
 
-      wp_media.state().get('selection').each(function(i) {
-        var el = i.toJSON();
-        console.log(el);
-        var $clone = $template.clone().removeClass('template');
-        $clone.find('.image-url img').attr('src', el.sizes.thumbnail.url).attr('title', el.title);
-        $clone.find('.image-url a').attr('href', el.url);
-        $clone.find('.image-actions input').val(el.id);
-        $table.find('tbody').append($clone);
-      });
+	addImage.addEventListener('click', (ev: MouseEvent) => {
+		ev.preventDefault();
+		const wpMedia = wp
+			.media({
+				title: 'Select background image for card',
+				library: { type: 'image' },
+				button: { text: 'Add this image' },
+			})
+			.on('select', () => {
+				wpMedia
+					.state()
+					.get('selection')
+					.each((item: { toJSON: any }) => {
+						const json = item.toJSON();
+						const clone = template.content.cloneNode(
+							true
+						) as HTMLTableRowElement;
+						const img = clone.querySelector(
+							'img'
+						) as HTMLImageElement;
+						img.src = json.sizes.thumbnail.url;
+						img.title = json.title;
+						const anchor = clone.querySelector(
+							'a'
+						) as HTMLAnchorElement;
+						anchor.href = json.url;
+						const input = clone.querySelector(
+							'input'
+						) as HTMLInputElement;
+						input.value = json.id;
 
-      var count = $table.find('tbody')
+						table.querySelector('tbody').appendChild(clone);
+					});
+			})
+			.open();
+	});
 
-    }).open();
-
-  });
-
-  $table.delegate('.ihs-remove-image-button', 'click', function(e) {
-    e.preventDefault();
-    var $button = $(this);
-    if (confirm('Remove this image from the list of backgrounds?')) {
-        $button.parent().parent().remove();
-    }
-  })
-})
+	// table.addEventListener('click', (ev: MouseEvent) => {});
+})();
