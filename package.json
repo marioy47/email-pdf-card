@@ -7,10 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "gulp",
-    "build:prod": "export NODE_ENV=production gulp build",
+    "build:prod": "NODE_ENV=production gulp build",
     "lint": "eslint ts/*.ts && composer phpcs",
-    "lint:fix": "eslint --fix ts/ && composer phpcbf"
+    "lint:fix": "eslint --fix ts/ && composer phpcbf",
+    "start": "gulp",
+    "zip": "NODE_ENV=production gulp zip"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "gulp": "^4.0.2",
     "gulp-composer": "^0.4.5",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-zip": "^5.0.2",
     "husky": "^4.3.5",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",

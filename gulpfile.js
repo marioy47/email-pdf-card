@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const typescript = require('gulp-typescript');
-const gulp = require('gulp');
 const composer = require('gulp-composer');
 const del = require('del');
+const gulp = require('gulp');
+const typescript = require('gulp-typescript');
+const zip = require('gulp-zip');
 
 const ENV_PROD = process.env.NODE_ENV === 'production' ? true : false;
 
@@ -23,7 +24,16 @@ function phpComposer() {
 }
 
 function clean() {
-	return del(['del/']);
+	return del(['js/**']);
+}
+
+function compress() {
+	return gulp
+		.src(['inc/**', 'js/**', 'vendor/**', 'email-pdf-card.php'], {
+			base: '../',
+		})
+		.pipe(zip('email-pdf-card.zip'))
+		.pipe(gulp.dest('./'));
 }
 
 function watch() {
@@ -31,9 +41,11 @@ function watch() {
 }
 
 exports.clean = clean;
+exports.compress = compress;
 exports.phpComposer = phpComposer;
 exports.scripts = scripts;
 exports.watch = watch;
 
-exports.build = gulp.series(phpComposer, scripts);
+exports.build = gulp.series(clean, phpComposer, scripts);
 exports.default = gulp.series(phpComposer, scripts, watch);
+exports.zip = gulp.series(clean, phpComposer, scripts, compress);
