@@ -133,11 +133,11 @@ class Settings_Page {
 		$images = array_key_exists( 'images', $this->options ) ? $this->options['images'] : array();
 
 		?>
-<table class="form-table" id="email-pdf-images-table" width="90%" align="center">
+<table class="wp-list-table widefat fixed striped table-view-list" id="email-pdf-images-table" width="90%" align="center">
 	<thead>
 		<tr>
 			<th><?php esc_html_e( 'Images', 'email-pdf' ); ?></th>
-			<th><?php esc_html_e( 'Actions', 'email-pdf' ); ?></th>
+			<th width="150px"><?php esc_html_e( 'Actions', 'email-pdf' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -152,8 +152,8 @@ class Settings_Page {
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<div>
-	<button class="button" id="email-pdf-add-image">Add Image</button>
+<div style="text-align: right">
+	<button class="button" id="email-pdf-add-image" style="margin: 1rem 0">Add Image</button>
 </div>
 <template id="email-pdf-template">
 	<tr class="row">

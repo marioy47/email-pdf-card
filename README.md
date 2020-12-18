@@ -34,13 +34,14 @@ npm start
 
 - [x] Add composer installation to `gulpfile.js`
 - [x] Add zip taks on `gulpfile.js` 
-- [ ] Enable remove images in the settings page
-- [ ] Organize the HTML for the image table on settings
-- [ ] Make the TypeScript for the Settings Image Table work 
-- [ ] Fix [X-Frame-Option](https://developer.mozilla.org/es/docs/Web/HTTP/Headers/X-Frame-Options) for inline PDF (or open in a new window)
-- [ ] Create the TypeScript that handles the form submission 
+- [x] Enable remove images in the settings page
+- [x] Organize the HTML for the image table on settings
+- [x] Make the TypeScript for the Settings Image Table work 
 - [ ] Finish the ajax call
+- [ ] Create the TypeScript that handles the form submission 
+- [ ] Fix [X-Frame-Option](https://developer.mozilla.org/es/docs/Web/HTTP/Headers/X-Frame-Options) for inline PDF (or open in a new window)
 - [ ] Add some usage documentation
 - [ ] Enable the usage of templates
 - [ ] Enable the selection of background images
 - [ ] Convert the admin image selector to TypeScript
+- [ ] Create a gutmberg block for the element inclusion

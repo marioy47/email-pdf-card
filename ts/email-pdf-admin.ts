@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 interface WpObject {
 	state: any;
 	media: any;
@@ -6,7 +7,7 @@ interface WpObject {
 declare const wp: WpObject;
 
 (() => {
-	const addImage = document.getElementById(
+	const addImageButton = document.getElementById(
 		'email-pdf-add-image'
 	) as HTMLButtonElement;
 
@@ -18,9 +19,7 @@ declare const wp: WpObject;
 		'email-pdf-images-table'
 	) as HTMLTableElement;
 
-	const rmButtons = table.querySelectorAll<HTMLAnchorElement>('.remove');
-
-	addImage.addEventListener('click', (ev: MouseEvent) => {
+	addImageButton.addEventListener('click', (ev: MouseEvent) => {
 		ev.preventDefault();
 		const wpMedia = wp
 			.media({
@@ -57,5 +56,12 @@ declare const wp: WpObject;
 			.open();
 	});
 
-	// table.addEventListener('click', (ev: MouseEvent) => {});
+	table.addEventListener('click', (ev: MouseEvent) => {
+		const el = ev.target as HTMLElement;
+		if (el.classList.contains('remove')) {
+			ev.preventDefault();
+			const parent = el.parentNode.parentNode;
+			el.parentNode.parentNode.parentNode.removeChild(parent);
+		}
+	});
 })();
